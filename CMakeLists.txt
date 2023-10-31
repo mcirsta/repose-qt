@@ -28,7 +28,6 @@ find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets LinguistTools WebEngineWidgets 
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets LinguistTools WebEngineWidgets REQUIRED)
 find_package(KF5TextEditor REQUIRED)
 
-set(TS_FILES repose_en_US.ts)
 
 set(PROJECT_SOURCES
         main.cpp
@@ -49,7 +48,6 @@ set(PROJECT_SOURCES
         src/utils/defer.h
         vendor/QtWaitingSpinner/waitingspinnerwidget.h vendor/QtWaitingSpinner/waitingspinnerwidget.cpp
         vendor/hexdump/Hexdump.hpp
-        ${TS_FILES}
 )
 
 
@@ -58,8 +56,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-
-    qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()
     if(ANDROID)
         add_library(repose SHARED
@@ -70,8 +66,6 @@ else()
             ${PROJECT_SOURCES}
         )
     endif()
-
-    qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
 target_link_libraries(repose PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::WebEngineWidgets KF5::TextEditor)
