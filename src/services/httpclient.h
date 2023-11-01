@@ -19,9 +19,11 @@ signals:
     void responseReceived(ResponsePtr response);
 private slots:
     void onResponseReceived(QNetworkReply* reply);
+    void sslErrors(QNetworkReply *reply, const QList<QSslError> & errors);
 
 private:
     QNetworkAccessManager* m_networkManager;
+    bool ignoreSslErrors;
 };
 
 #endif // HTTPCLIENT_H

@@ -7,8 +7,10 @@
 HttpClient::HttpClient(QObject* parent)
     : QObject(parent)
     , m_networkManager(new QNetworkAccessManager(this))
+    , ignoreSslErrors(true)
 {
     QObject::connect(m_networkManager, &QNetworkAccessManager::finished, this, &HttpClient::onResponseReceived);
+    QObject::connect(m_networkManager, &QNetworkAccessManager::sslErrors, this, &HttpClient::sslErrors);
 }
 
 void HttpClient::initiateRequest(RequestPtr request)
@@ -115,4 +117,17 @@ void HttpClient::onResponseReceived(QNetworkReply* reply)
     res->setBody(answer);
     req->setResponse(res);
     emit responseReceived(res);
+}
+
+void HttpClient::sslErrors(QNetworkReply *reply, const QList<QSslError> & errors)
+{
+    qDebug() << "sslErrors!";
+    if(this->ignoreSslErrors) {
+        qDebug() << "sslErrors ignored!";
+        reply->ignoreSslErrors(errors);
+    } else {
+        qDebug() << "sslErrors NOT ignored!";
+        QList<QSslError> empty;
+        reply->ignoreSslErrors(empty);
+    }
 }
