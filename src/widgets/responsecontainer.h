@@ -2,10 +2,8 @@
 #define RESPONSECONTAINER_H
 
 #include <QWidget>
+#include <QTextEdit>
 
-#include <KTextEditor/Document>
-#include <KTextEditor/Editor>
-#include <KTextEditor/View>
 
 #include <src/models/rootstate.h>
 #include <src/services/httpclient.h>
@@ -34,9 +32,7 @@ private:
     RootState* m_rootState;
     HttpClient* m_httpClient;
 
-    KTextEditor::Editor* m_prettyResponseEditor;
-    KTextEditor::Document* m_prettyResponseDocument;
-    KTextEditor::View* m_prettyResponseView;
+    QTextEdit* m_prettyResponseEditor;
 };
 
 #endif // RESPONSECONTAINER_H

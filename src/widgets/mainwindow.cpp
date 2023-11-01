@@ -31,12 +31,12 @@ MainWindow::MainWindow(QWidget* parent)
     auto requestListLayout = new QVBoxLayout(ui->requestList);
     requestListLayout->addWidget(requestTree);
     requestListLayout->setSpacing(0);
-    requestListLayout->setMargin(0);
+    requestListLayout->setContentsMargins(0,0,0,0);
 
     requestEditor = new RequestEditor(m_rootState, ui->requestResponseContainer);
     auto requestEditorLayout = new QVBoxLayout(ui->requestResponseContainer);
     requestEditorLayout->setSpacing(0);
-    requestEditorLayout->setMargin(0);
+    requestEditorLayout->setContentsMargins(0,0,0,0);
     requestEditorLayout->setContentsMargins(0, 0, 5, 5);
     requestEditorLayout->addWidget(requestEditor);
 
@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget* parent)
     m_requestTabs->setExpanding(false);
     m_requestTabs->setElideMode(Qt::ElideRight);
     tabBarLayout->addWidget(m_requestTabs);
-    tabBarLayout->setMargin(0);
+    tabBarLayout->setContentsMargins(0,0,0,0);
 
     connect(actionShowSideBar, &QAction::toggled, this, &MainWindow::onShowSidebarToggled);
     connect(actionNewRequest, &QAction::triggered, this, &MainWindow::onNewRequestTriggered);

@@ -23,11 +23,11 @@ RequestEditor::RequestEditor(RootState* rootState, QWidget* parent)
     m_responseContainer = new ResponseContainer(rootState, m_httpClient, this);
 
     auto requestContainerLayout = new QVBoxLayout(ui->requestContainerWrapper);
-    requestContainerLayout->setMargin(0);
+    requestContainerLayout->setContentsMargins(0,0,0,0);
     requestContainerLayout->addWidget(m_requestContainer);
 
     auto responseContainerLayout = new QVBoxLayout(ui->responseContainerInnerWrap);
-    responseContainerLayout->setMargin(0);
+    responseContainerLayout->setContentsMargins(0,0,0,0);
     responseContainerLayout->addWidget(m_responseContainer);
 
     m_responseLoadingSpinner->setRoundness(70.0);

@@ -37,8 +37,6 @@ RequestContainer::RequestContainer(RootState* rootState, QWidget* parent)
     , ui(new Ui::RequestContainer)
     , m_rootState(rootState)
     , m_requestEditor(nullptr)
-    , m_requestEditorDocument(nullptr)
-    , m_requestEditorView(nullptr)
     , m_paramsTable(nullptr)
     , m_headersTable(nullptr)
     , m_formDataTable(nullptr)
@@ -46,36 +44,33 @@ RequestContainer::RequestContainer(RootState* rootState, QWidget* parent)
 {
     ui->setupUi(this);
 
-    m_requestEditor = KTextEditor::Editor::instance();
-    m_requestEditorDocument = m_requestEditor->createDocument(0);
-    m_requestEditorView = m_requestEditorDocument->createView(this);
-    m_requestEditorView->setContentsMargins(0, 0, 0, 0);
+    m_requestEditor = new QTextEdit(this);
 
     auto requestEditorLayout = new QVBoxLayout(ui->bodyRaw);
-    requestEditorLayout->setMargin(0);
+    requestEditorLayout->setContentsMargins(0,0,0,0);
     requestEditorLayout->setSpacing(0);
-    requestEditorLayout->addWidget(m_requestEditorView);
+    requestEditorLayout->addWidget(m_requestEditor);
 
     auto paramTableLayout = new QVBoxLayout(ui->paramsTab);
-    paramTableLayout->setMargin(0);
+    paramTableLayout->setContentsMargins(0,0,0,0);
     paramTableLayout->setSpacing(0);
     m_paramsTable = new ParamTable(this);
     paramTableLayout->addWidget(m_paramsTable);
 
     auto headerTableLayout = new QVBoxLayout(ui->headersTab);
-    headerTableLayout->setMargin(0);
+    headerTableLayout->setContentsMargins(0,0,0,0);
     headerTableLayout->setSpacing(0);
     m_headersTable = new ParamTable(this);
     headerTableLayout->addWidget(m_headersTable);
 
     auto formDataTableLayout = new QVBoxLayout(ui->bodyFormData);
-    formDataTableLayout->setMargin(0);
+    formDataTableLayout->setContentsMargins(0,0,0,0);
     formDataTableLayout->setSpacing(0);
     m_formDataTable = new ParamTable(this);
     formDataTableLayout->addWidget(m_formDataTable);
 
     auto urlEncodedTableLayout = new QVBoxLayout(ui->bodyFormUrlEncoded);
-    urlEncodedTableLayout->setMargin(0);
+    urlEncodedTableLayout->setContentsMargins(0,0,0,0);
     urlEncodedTableLayout->setSpacing(0);
     m_formUrlTable = new ParamTable(this);
     urlEncodedTableLayout->addWidget(m_formUrlTable);
@@ -89,10 +84,6 @@ RequestContainer::RequestContainer(RootState* rootState, QWidget* parent)
     QObject::connect(ui->binaryBodyOpenDiagButton, &QPushButton::clicked, this, &RequestContainer::onBinaryBodyOpenDiagButtonClicked);
     QObject::connect(ui->paramsTabView, &QTabWidget::currentChanged, this, &RequestContainer::onParamTabViewCurrentIndexChanged);
     QObject::connect(ui->bodyTabWidget, &QTabWidget::currentChanged, this, &RequestContainer::onBodyTabWidgetCurrentIndexChanged);
-
-    QObject::connect(m_requestEditorDocument, &KTextEditor::Document::modeChanged, this, [&](KTextEditor::Document* doc) {
-        m_rootState->activeRequest()->setRequestMode(m_requestEditorDocument->mode());
-    });
 }
 
 RequestContainer::~RequestContainer()
@@ -153,7 +144,7 @@ void RequestContainer::onActiveRequestChanged()
         break;
     }
 
-    m_requestEditorDocument->setText(req->body());
+    m_requestEditor->setText(req->body());
 
     m_paramsTable->setModel(req->params().get());
     m_headersTable->setModel(req->headers().get());

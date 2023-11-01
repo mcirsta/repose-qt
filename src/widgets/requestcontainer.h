@@ -4,13 +4,9 @@
 #include "paramtable.h"
 
 #include <QWidget>
-
-#include <KTextEditor/Document>
-#include <KTextEditor/Editor>
-#include <KTextEditor/View>
+#include <QTextEdit>
 
 #include <src/models/rootstate.h>
-//#include <KTextEditor/EditorChooser>
 
 namespace Ui {
 class RequestContainer;
@@ -23,7 +19,7 @@ public:
     explicit RequestContainer(RootState* rootState, QWidget* parent = nullptr);
     ~RequestContainer();
 
-    QString body() { return m_requestEditorDocument->text(); }
+    QString body() { return m_requestEditor->toPlainText(); }
 private slots:
     void onBinaryBodyOpenDiagButtonClicked();
     void onParamTabViewCurrentIndexChanged();
@@ -37,9 +33,7 @@ private:
     RootState* m_rootState;
     Ui::RequestContainer* ui;
 
-    KTextEditor::Editor* m_requestEditor;
-    KTextEditor::Document* m_requestEditorDocument;
-    KTextEditor::View* m_requestEditorView;
+    QTextEdit* m_requestEditor;
     ParamTable* m_paramsTable;
     ParamTable* m_headersTable;
     ParamTable* m_formDataTable;

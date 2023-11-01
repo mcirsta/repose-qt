@@ -23,17 +23,13 @@ ResponseContainer::ResponseContainer(RootState* rootState, HttpClient* httpClien
     ui->setupUi(this);
     m_rootState = rootState;
 
-    m_prettyResponseEditor = KTextEditor::Editor::instance();
-    m_prettyResponseDocument = m_prettyResponseEditor->createDocument(0);
-    m_prettyResponseView = m_prettyResponseDocument->createView(this);
-    m_prettyResponseView->setContentsMargins(0, 0, 0, 0);
-
-    m_prettyResponseDocument->setReadWrite(false);
+    m_prettyResponseEditor = new QTextEdit(this);
+    m_prettyResponseEditor->setReadOnly(true);
 
     auto prettyResponseLayout = new QVBoxLayout(ui->responseBodyPrettyTab);
-    prettyResponseLayout->setMargin(0);
+    prettyResponseLayout->setContentsMargins(0,0,0,0);
     prettyResponseLayout->setSpacing(0);
-    prettyResponseLayout->addWidget(m_prettyResponseView);
+    prettyResponseLayout->addWidget(m_prettyResponseEditor);
 
     connect(m_httpClient, &HttpClient::responseReceived, this, &ResponseContainer::onResponseReceived);
 
@@ -150,16 +146,13 @@ void ResponseContainer::bindResponse(ResponsePtr response)
         prettyBody = response->body();
     }
 
-    m_prettyResponseDocument->setReadWrite(true);
-    m_prettyResponseDocument->setText(prettyBody);
-    m_prettyResponseView->scroll(0, 0);
-    KTextEditor::Cursor cur;
-    cur.setPosition(0, 0);
-    m_prettyResponseView->setScrollPosition(cur);
-    m_prettyResponseDocument->setReadWrite(false);
+    m_prettyResponseEditor->setText(prettyBody);
+
+//    m_prettyResponseView->setScrollPosition(cur);
+//    m_prettyResponseDocument->setReadWrite(false);
     auto mimeType = response->contentType().split(";").first().trimmed().toLower();
-    auto mode = MimeMapper::mapMime(mimeType);
-    m_prettyResponseDocument->setMode(mode);
+//    auto mode = MimeMapper::mapMime(mimeType);
+//    m_prettyResponseDocument->setMode(mode);
 
     ui->responseTextRaw->document()->setPlainText(body);
     ui->responseTextRaw->scroll(0, 0);
@@ -171,8 +164,8 @@ void ResponseContainer::bindResponse(ResponsePtr response)
     ui->sizeLabel->setText(Humanize::bytes(response->body().length()));
 
     if (isPreviewableResponse(mimeType)) {
-        ui->previewWebEngine->setContent(response->body(), mimeType);
+        ui->previewWeb->setHtml(response->body());
     } else {
-        ui->previewWebEngine->setContent("", "text/plain; charset=UTF-8");
+        ui->previewWeb->setPlainText("");
     }
 }

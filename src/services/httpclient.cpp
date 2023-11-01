@@ -22,7 +22,7 @@ void HttpClient::initiateRequest(RequestPtr request)
     timer.start();
     request->setRequestTimer(timer);
     nr.setAttribute(QNetworkRequest::User, QVariant::fromValue(request));
-    nr.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    //nr.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
     nr.setMaximumRedirectsAllowed(10);
 
     for (auto&& h : request->headers()->paramList()) {
