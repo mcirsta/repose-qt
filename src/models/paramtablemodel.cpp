@@ -125,7 +125,7 @@ bool ParamTableModel::setData(const QModelIndex& index, const QVariant& value, i
     if (index.row() > m_paramList.size() || index.row() < 0)
         return false;
 
-    if (value.type() != QVariant::Type::String)
+    if (value.typeId() != QMetaType::Type::QString)
         return false;
 
     auto param = m_paramList[index.row()];
