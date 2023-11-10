@@ -22,7 +22,7 @@ void ParamTableModel::upsertRowByKey(ParamTableRow row)
     for (auto&& r : m_paramList) {
         if (r.key().compare(row.key(), Qt::CaseInsensitive) == 0) {
             r.setValue(row.value());
-            emit dataChanged(index(idx, Columns::Key), index(idx, Columns::Description));
+            emit dataChanged(index(idx, Columns::Key), index(idx, Columns::Value));
 
             return;
         }
@@ -39,7 +39,7 @@ void ParamTableModel::appendRow(ParamTableRow row)
 
     auto idx = m_paramList.length() - 1;
     m_paramList[idx] = row;
-    emit dataChanged(index(idx, Columns::Key), index(idx, Columns::Description));
+    emit dataChanged(index(idx, Columns::Key), index(idx, Columns::Value));
 
     addEmptyRow();
 }
@@ -77,13 +77,7 @@ void ParamTableModel::updateFromQuery(const QList<QPair<QString, QString>>& quer
     QList<ParamTableRow> newRows;
 
     for (auto&& item : queryItems) {
-        ParamTableRow newRow(item.first, item.second, "");
-        for (auto&& row : m_paramList) {
-            if (item.first == row.key()) { // Keep description.
-                newRow.setDescription(row.description());
-                break;
-            }
-        }
+        ParamTableRow newRow(item.first, item.second);
         newRows.append(newRow);
     }
 
@@ -101,7 +95,7 @@ int ParamTableModel::rowCount(const QModelIndex& parent) const
 
 int ParamTableModel::columnCount(const QModelIndex& parent) const
 {
-    return parent.isValid() ? 0 : 3;
+    return parent.isValid() ? 0 : 2;
 }
 
 QVariant ParamTableModel::data(const QModelIndex& index, int role) const
@@ -118,8 +112,6 @@ QVariant ParamTableModel::data(const QModelIndex& index, int role) const
         return row.key();
     case Columns::Value:
         return row.value();
-    case Columns::Description:
-        return row.description();
     default:
         return QVariant();
     }
@@ -145,9 +137,6 @@ bool ParamTableModel::setData(const QModelIndex& index, const QVariant& value, i
         break;
     case Columns::Value:
         param.setValue(val);
-        break;
-    case Columns::Description:
-        param.setDescription(val);
         break;
     }
 
@@ -181,8 +170,6 @@ QVariant ParamTableModel::headerData(int section, Qt::Orientation orientation, i
         return "Key";
     case Columns::Value:
         return "Value";
-    case Columns::Description:
-        return "Description";
     default:
         return QVariant();
     }

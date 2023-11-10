@@ -9,8 +9,7 @@
 class ParamTableModel : public QAbstractTableModel {
 public:
     enum Columns { Key,
-        Value,
-        Description };
+        Value};
     Q_ENUM(Columns)
 
     explicit ParamTableModel(QObject* parent = nullptr);

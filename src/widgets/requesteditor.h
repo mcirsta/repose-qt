@@ -39,7 +39,6 @@ private slots:
     void onSwitchResponseButtonClicked(bool checked);
     void onSendButtonClicked();
     void onUrlEditReturnPressed();
-    void onRequestNameEditTextEdited(const QString& arg1);
     void onMethodComboCurrentTextChanged(const QString& arg1);
     void onUrlEditEditingFinished();
 

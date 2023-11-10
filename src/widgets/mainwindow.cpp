@@ -68,9 +68,6 @@ MainWindow::MainWindow(QWidget* parent)
         auto req = m_rootState->requestList()[idx];
 
         m_requestTabs->insertTab(idx, req->displayName());
-        connect(req.get(), &Request::nameChanged, this, [=]() {
-            m_requestTabs->setTabText(idx, req->name());
-        });
     });
 
     connect(m_rootState, &RootState::requestListRemoved, this, [=](int idx) {

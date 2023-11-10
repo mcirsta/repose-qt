@@ -9,7 +9,6 @@
 
 Request::Request(QObject* parent)
     : QObject(parent)
-    , m_name("")
     , m_url("")
     , m_method("GET")
     , m_body("")
@@ -57,23 +56,11 @@ const QString& Request::method() const { return m_method; }
 
 const QString& Request::url() const { return m_url; }
 
-const QString& Request::name() const { return m_name; }
-
 const QString Request::displayName()
 {
-    if (m_name != "")
-        return m_name;
     if (m_url != "")
         return QString("%1 - %1").arg(m_method, m_url);
     return "New Request";
-}
-
-void Request::setName(const QString& newName)
-{
-    if (m_name == newName)
-        return;
-    m_name = newName;
-    emit nameChanged();
 }
 
 void Request::setUrl(const QString& newUrl)
@@ -190,27 +177,27 @@ void Request::updateContentType()
 
         if (m_requestMode == "Normal")
             m_headers->upsertRowByKey(
-                ParamTableRow("Content-Type", "text/plain", ""));
+                ParamTableRow("Content-Type", "text/plain"));
         else if (m_requestMode == "JSON")
             m_headers->upsertRowByKey(
-                ParamTableRow("Content-Type", "application/json", ""));
+                ParamTableRow("Content-Type", "application/json"));
         else if (m_requestMode == "HTML")
-            m_headers->upsertRowByKey(ParamTableRow("Content-Type", "text/html", ""));
+            m_headers->upsertRowByKey(ParamTableRow("Content-Type", "text/html"));
         else if (m_requestMode == "JavaScript")
             m_headers->upsertRowByKey(
-                ParamTableRow("Content-Type", "application/javascript", ""));
+                ParamTableRow("Content-Type", "application/javascript"));
         else if (m_requestMode.startsWith("XML"))
             m_headers->upsertRowByKey(
-                ParamTableRow("Content-Type", "application/xml", ""));
+                ParamTableRow("Content-Type", "application/xml"));
 
         break;
     case Request::RequestBody::Form:
         m_headers->upsertRowByKey(
-            ParamTableRow("Content-Type", "multipart/form-data", ""));
+            ParamTableRow("Content-Type", "multipart/form-data"));
         break;
     case Request::RequestBody::UrlEncoded:
         m_headers->upsertRowByKey(
-            ParamTableRow("Content-Type", "application/x-www-form-urlencoded", ""));
+            ParamTableRow("Content-Type", "application/x-www-form-urlencoded"));
         break;
     case Request::RequestBody::Binary:
         setContentTypeForBinaryBody();
@@ -224,7 +211,7 @@ void Request::setContentTypeForBinaryBody()
     auto mimeType = mimeDb.mimeTypeForFile(m_bodyBinary);
     if (mimeType.isValid()) {
         m_headers->upsertRowByKey(
-            ParamTableRow("Content-Type", mimeType.name(), ""));
+            ParamTableRow("Content-Type", mimeType.name()));
     } else {
         m_headers->removeRowByKey("Content-Type");
     }

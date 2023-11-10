@@ -46,7 +46,6 @@ public:
     };
 
     Q_OBJECT
-    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(QString url READ url WRITE setUrl NOTIFY urlChanged)
     Q_PROPERTY(QString method READ method WRITE setMethod NOTIFY methodChanged)
     Q_PROPERTY(QString body READ body WRITE setBody NOTIFY bodyChanged)
@@ -73,9 +72,6 @@ public:
 
     const QString& url() const;
     void setUrl(const QString& newUrl);
-
-    const QString& name() const;
-    void setName(const QString& newName);
 
     const QString displayName();
 
@@ -128,7 +124,6 @@ public:
     void setNetworkReply(QNetworkReply* newNetworkReply);
 
 signals:
-    void nameChanged();
     void urlChanged();
     void methodChanged();
     void startRequestTimeChanged();
@@ -154,7 +149,6 @@ signals:
 private:
     QString m_url;
     QString m_method;
-    QString m_name;
     QElapsedTimer m_requestTimer;
     QString m_body;
     ParamTableModelPtr m_params;

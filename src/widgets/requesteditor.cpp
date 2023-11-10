@@ -58,7 +58,6 @@ RequestEditor::RequestEditor(RootState* rootState, QWidget* parent)
     QObject::connect(ui->urlEdit, &QLineEdit::editingFinished, this, &RequestEditor::onUrlEditEditingFinished);
     QObject::connect(ui->urlEdit, &QLineEdit::returnPressed, this, &RequestEditor::onUrlEditReturnPressed);
     QObject::connect(ui->methodCombo, &QComboBox::currentTextChanged, this, &RequestEditor::onMethodComboCurrentTextChanged);
-    QObject::connect(ui->requestNameEdit, &QLineEdit::textChanged, this, &RequestEditor::onRequestNameEditTextEdited);
 }
 
 RequestEditor::~RequestEditor()
@@ -93,11 +92,6 @@ void RequestEditor::onUrlEditReturnPressed()
     onUrlEditEditingFinished();
 
     ui->sendButton->click();
-}
-
-void RequestEditor::onRequestNameEditTextEdited(const QString& name)
-{
-    m_rootState->activeRequest()->setName(name);
 }
 
 void RequestEditor::onMethodComboCurrentTextChanged(const QString& text)
@@ -138,7 +132,6 @@ void RequestEditor::bindRequest()
     }
 
     ui->urlEdit->setText(request->url());
-    ui->requestNameEdit->setText(request->name());
     ui->methodCombo->setCurrentText(request->method());
     ui->responseLoaderStack->setCurrentIndex(request->loading() ? 0 : 1);
 

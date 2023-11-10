@@ -2,14 +2,13 @@
 
 ParamTableRow::ParamTableRow()
 {
-    ParamTableRow("", "", "");
+    ParamTableRow("", "");
 }
 
-ParamTableRow::ParamTableRow(QString key, QString value, QString description)
+ParamTableRow::ParamTableRow(QString key, QString value)
 {
     m_key = key;
     m_value = value;
-    m_description = description;
 }
 
 const QString& ParamTableRow::key() const
@@ -30,14 +29,4 @@ const QString& ParamTableRow::value() const
 void ParamTableRow::setValue(const QString& newValue)
 {
     m_value = newValue;
-}
-
-const QString& ParamTableRow::description() const
-{
-    return m_description;
-}
-
-void ParamTableRow::setDescription(const QString& newDescription)
-{
-    m_description = newDescription;
 }
